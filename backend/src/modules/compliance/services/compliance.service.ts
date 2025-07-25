@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { CreateComplianceDto } from '../dto/create-compliance.dto';
-import { UpdateComplianceDto } from '../dto/update-compliance.dto';
+import { ProviderService } from '../provider/provider.service';
+import { RedisService } from 'src/modules/redis/services/redis.service';
+import { PactManData } from '../interfaces/provider.interface';
 
 @Injectable()
 export class ComplianceService {
-  create(createComplianceDto: CreateComplianceDto) {
-    return 'This action adds a new compliance';
+  constructor(
+    private readonly providerService: ProviderService,
+    private readonly redisService: RedisService,
+  ) {}
+
+  async checkCompliance(ein: string): Promise<PactManData> {
+
+    await this.redisService.storeSearchHistory(ein);
+
+    const cached = await this.redisService.getQuery(ein);
+    if (cached) return cached;
+
+    const result = await this.providerService.getComplianceByEIN(ein);
+
+    await this.redisService.storeQuery(ein, result);
+
+    return result;
   }
 
-  findAll() {
-    return `This action returns all compliance`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} compliance`;
-  }
-
-  update(id: number, updateComplianceDto: UpdateComplianceDto) {
-    return `This action updates a #${id} compliance`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} compliance`;
-  }
+  async getSearchHistory(): Promise<string[]> {
+    const history = await this.redisService.getSearchHistory();
+    return history;
+  } 
 }

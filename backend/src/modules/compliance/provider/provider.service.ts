@@ -7,20 +7,20 @@ import { PactManApiResponse, PactManData } from '../interfaces/provider.interfac
 @Injectable()
 export class ProviderService {
   private readonly logger = new Logger(ProviderService.name);
-  private readonly BASE_URL = 'https://api.pactman.org/nonprofitcheckplus/v1';
+  private readonly BASE_URL = 'https://entities.pactman.org/api/entities/nonprofitcheck/v1/us';
 
   constructor(private readonly httpService: HttpService, private readonly configServie: ConfigService) {}
 
   async getComplianceByEIN(ein: string): Promise<PactManData> {
     const url = `${this.BASE_URL}/ein/${ein}`;
     const headers = {
-        'Authorization': this.configServie.get<string>('PACTMAN_API_KEY')
+        'Authorization': `Bearer ${this.configServie.get<string>('PACTMAN_API_KEY')}`
     }
 
     try {
       const response = await this.httpService.fetch<{status: number, data: PactManApiResponse}>(url, {headers});
 
-      if(response.status == 404){
+      if(response.data.code == 404){
         throw new NotFoundException(response.data.errors![0].reason);
       }
 
@@ -30,8 +30,8 @@ export class ProviderService {
       
       throw new HttpException(`Failed to fetch compliance info: ${response.data.errors![0].reason}`, 500);
     } catch (error) {
-      this.logger.error(`Error fetching compliance for EIN ${ein}`, error.stack);
-      throw new HttpException('Failed to fetch compliance info', 500);
+      this.logger.error(`Error fetching compliance for EIN ${ein}`, error);
+      throw error;
     }
   }
 

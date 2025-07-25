@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {Redis} from 'ioredis';
+import { PactManData } from 'src/modules/compliance/interfaces/provider.interface';
 
 @Injectable()
 export class RedisService implements OnModuleInit {
@@ -14,15 +15,15 @@ export class RedisService implements OnModuleInit {
   onModuleInit() {
     this.client = new Redis({
       host: this.configService.get<string>('REDIS_HOST') ?? 'localhost',
-      port: this.configService.get<number>('REDIS_HOST') ?? 6379,
+      port: this.configService.get<number>('REDIS_PORT') ?? 6379,
     });
   }
   
   async storeQuery(ein: string, result: any): Promise<void> {
-    await this.client.set(`history:${ein}`, JSON.stringify(result), 'EX', 900);
+    await this.client.set(`history:${ein}`, JSON.stringify(result), 'EX', 300);
   }
   
-  async getQuery(ein: string): Promise<any> {
+  async getQuery(ein: string): Promise<PactManData | null> {
     const data = await this.client.get(`history:${ein}`);
     return data ? JSON.parse(data) : null;
   }
@@ -31,7 +32,7 @@ export class RedisService implements OnModuleInit {
     await this.client.rpush("search:history", JSON.stringify(ein));
   }
   
-  async getSearchHistory() {
+  async getSearchHistory(): Promise<string[]> {
     const key = `search:history`;
     const results = await this.client.lrange(key, 0, -1);
     return results.map(item => JSON.parse(item));
