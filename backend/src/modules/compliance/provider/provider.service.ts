@@ -1,6 +1,5 @@
 import { Injectable, HttpException, Logger, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
 import { HttpService } from 'src/modules/http/services/http.service';
 import { PactManApiResponse, PactManData } from '../interfaces/provider.interface';
 
