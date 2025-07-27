@@ -18,6 +18,7 @@ export class ComplianceService {
     if (cached) return cached;
 
     const result = await this.providerService.getComplianceByEIN(ein);
+    result.isCompliant = this.isFullyCompliant(result);
 
     await this.redisService.storeQuery(ein, result);
 
@@ -28,4 +29,15 @@ export class ComplianceService {
     const history = await this.redisService.getSearchHistory();
     return history;
   } 
+
+  private isFullyCompliant(org: PactManData): boolean {
+  return (
+    org.bmf_status === true &&
+    org.exempt_status_code === "01" &&
+    org.revocation_code === null &&
+    org.revocation_date === null &&
+    org.ofac_status.includes("NOT included in the Office of Foreign Assets Control") &&
+    org.pub78_verified === true
+  );
+}
 }

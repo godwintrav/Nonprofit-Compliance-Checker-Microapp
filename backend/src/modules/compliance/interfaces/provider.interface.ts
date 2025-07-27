@@ -53,6 +53,7 @@ export interface PactManData {
   report_date: string;
   foundation_type_code: string;
   foundation_type_description: string;
+  isCompliant?: boolean | null;
 }
 
 export interface PactManApiResponse {
