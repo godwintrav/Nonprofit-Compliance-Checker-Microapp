@@ -1,10 +1,24 @@
 <section class="result-section">
     <h3>Search Result</h3>
     <div class="result-card">
-        <h4>Organization Name: <span>Sample Nonprofit Inc.</span></h4>
-        <p><strong>Compliance Status:</strong> <span class="status good">Compliant</span></p>
-        <p><strong>BMF Flag:</strong> ✅</p>
-        <p><strong>PUB78 Flag:</strong> ✅</p>
+        <h4>Organization Name: <span>{{result().organization_name}}</span></h4>
+        <p><strong>Compliance Status:</strong> <span class="status {{result().isCompliant ? 'good' : 'bad'}}">Compliant</span></p>
+        <p>
+            <strong>BMF Flag:</strong>
+             @if(result().bmf_status) {
+                ✅
+             } @else {
+                ❌
+             }
+            </p>
+        <p>
+            <strong>PUB78 Flag:</strong>
+             @if(result().pub78_verified) {
+                ✅
+             } @else {
+                ❌
+             }
+        </p>
         <p><strong>Source Match:</strong> EIN exact match</p>
     </div>
 </section>

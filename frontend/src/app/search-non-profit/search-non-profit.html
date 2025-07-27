@@ -6,4 +6,12 @@
     </form>
 </section>
 
-<app-compliance-result />
+@if (isLoading() == true) {
+    <h3>Loading...</h3>
+}@else if(result() !== null) {
+    <app-compliance-result [result]="result()!" />
+}@else if (hasError() == true) {
+    <h3>{{errorMessage()}}</h3>
+}
+
+

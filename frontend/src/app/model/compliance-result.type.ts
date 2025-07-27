@@ -1,4 +1,4 @@
-export type ComplianceResult = {
+export type ComplianceResultType = {
     pactman_org_url: string;
   organization_info_last_modified: string;
   ein: string;

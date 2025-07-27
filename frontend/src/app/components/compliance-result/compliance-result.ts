@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { ComplianceResultType } from '../../model/compliance-result.type';
 
 @Component({
   selector: 'app-compliance-result',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './compliance-result.css'
 })
 export class ComplianceResult {
-
+  result = input.required<ComplianceResultType>()
 }
