@@ -1,0 +1,39 @@
+.result-section {
+  margin-bottom: 2rem;
+}
+
+.result-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.result-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.result-card p {
+  margin: 0.3rem 0;
+}
+
+.status {
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.status.good {
+  color: #1e7e34;
+  background-color: #d4edda;
+}
+
+.status.warning {
+  color: #856404;
+  background-color: #fff3cd;
+}
+
+.status.bad {
+  color: #721c24;
+  background-color: #f8d7da;
+}

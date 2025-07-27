@@ -1,0 +1,9 @@
+<section class="search-section">
+    <h2>Search by EIN or Organization Name</h2>
+    <form class="search-form" (ngSubmit)="onSubmit()">
+        <input [(ngModel)]="ein" name="ein" required placeholder="Enter EIN" />
+        <button type="submit">Search</button>
+    </form>
+</section>
+
+<app-compliance-result />
