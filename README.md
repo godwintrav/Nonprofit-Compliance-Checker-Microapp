@@ -171,22 +171,30 @@ This application is configured for easy deployment using CapRover. Each service 
 │   │   └── main.ts
 │   └── ...
 ├── backend/                  # NestJS Backend Application
-│   ├── Dockerfile
-│   ├── captain-definition
-│   ├── package.json
-│   ├── src/
-│   │   ├── main.ts
-│   │   ├── middlewares/
-│   │   ├── modules/
-│   │   │   ├── app.controller.ts
-│   │   │   ├── app.module.ts
-│   │   │   ├── compliance/
-│   │   │   ├── http/
-│   │   │   └── redis/
-│   │   └── ...
-│   └── ...
-└── .gitignore
+    ├── Dockerfile
+    ├── captain-definition
+    ├── package.json
+    ├── src/
+    │   ├── main.ts
+    │   ├── middlewares/
+    │   ├── modules/
+    │   │   ├── app.controller.ts
+    │   │   ├── app.module.ts
+    │   │   ├── compliance/
+    │   │   ├── http/
+    │   │   └── redis/
+    │   └── ...
+    └── ...
+
 ```
+
+## Assumptions
+
+- I assumed that the search history should be every EIN searched by every user and thus allowing duplicates to ensure the history is up to date.
+- I hardcoded the authentication token to simulate a real world auth token.
+- I used the test Bearer Token for the Pactman API for authorization when communicating with the endpoint.
+- I used only EIN because the Pactman API only accepts EIN and not Organization name.
+- I used Redis for storage to mock a Database.
 
 
 ## License
