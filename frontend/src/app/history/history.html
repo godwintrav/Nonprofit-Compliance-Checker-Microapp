@@ -1,23 +1,15 @@
 <section class="history-section" id="history">
     <h3>Search History</h3>
-    <ul class="history-list">
-        <li>
-            <div class="history-entry">
-                <span>Acme Foundation</span>
-                <span class="status warning">Pending</span>
-            </div>
-        </li>
-        <li>
-            <div class="history-entry">
-                <span>Global Relief Org</span>
-                <span class="status good">Compliant</span>
-            </div>
-        </li>
-        <li>
-            <div class="history-entry">
-                <span>Fake Org 123</span>
-                <span class="status bad">Non-Compliant</span>
-            </div>
-        </li>
-    </ul>
+    @if (isLoading() == true) {
+        <p>Loading...</p>
+    }@else if(entries().length > 0) {
+        <ul class="history-list">
+            @for (entry of entries(); track entry.ein) {
+                <app-history-entry [entry]="entry" />
+            }
+            
+        </ul>
+    }@else if (hasError() == true) {
+        <p style="color: red;">{{errorMessage()}}</p>
+    }
 </section>

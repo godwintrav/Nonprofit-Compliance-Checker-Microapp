@@ -12,20 +12,27 @@ export class ComplianceService {
 
   async checkCompliance(ein: string): Promise<PactManData> {
 
-    await this.redisService.storeSearchHistory(ein);
 
     const cached = await this.redisService.getQuery(ein);
-    if (cached) return cached;
+    if (cached){
+      await this.redisService.storeSearchHistory(cached);
+      return cached;
+    }
+       
 
     const result = await this.providerService.getComplianceByEIN(ein);
     result.isCompliant = this.isFullyCompliant(result);
 
-    await this.redisService.storeQuery(ein, result);
+    await Promise.all([
+      await this.redisService.storeQuery(ein, result),
+      await this.redisService.storeSearchHistory(result),
+    ]);
+    
 
     return result;
   }
 
-  async getSearchHistory(): Promise<string[]> {
+  async getSearchHistory(): Promise<PactManData[]> {
     const history = await this.redisService.getSearchHistory();
     return history;
   } 

@@ -28,14 +28,14 @@ export class RedisService implements OnModuleInit {
     return data ? JSON.parse(data) : null;
   }
   
-  async storeSearchHistory(ein: string): Promise<void> {
-    await this.client.rpush("search:history", JSON.stringify(ein));
+  async storeSearchHistory(data: PactManData): Promise<void> {
+    await this.client.rpush("search:history", JSON.stringify(data));
   }
   
-  async getSearchHistory(): Promise<string[]> {
+  async getSearchHistory(): Promise<PactManData[]> {
     const key = `search:history`;
     const results = await this.client.lrange(key, 0, -1);
-    return results.map(item => JSON.parse(item));
+    return results.map(item => JSON.parse(item) as PactManData);
   }
   
   async flushAll(): Promise<string> {

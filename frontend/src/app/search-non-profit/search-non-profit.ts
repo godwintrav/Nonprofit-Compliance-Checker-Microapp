@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ComplianceResult } from '../components/compliance-result/compliance-result';
-import { ComplianceSearch } from '../services/compliance-search';
+import { ComplianceCheckerService } from '../services/compliance-checker-service';
 import { catchError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ComplianceResultType } from '../model/compliance-result.type';
@@ -17,7 +17,7 @@ export class SearchNonProfit {
   result = signal<ComplianceResultType | null>(null);
   hasError = signal(false);
   errorMessage = signal('')
-  complianceSearchService = inject(ComplianceSearch);
+  complianceSearchService = inject(ComplianceCheckerService);
   
   onSubmit() {
     this.isLoading.set(true);

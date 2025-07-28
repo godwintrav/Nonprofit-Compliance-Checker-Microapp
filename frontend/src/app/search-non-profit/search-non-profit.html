@@ -11,7 +11,7 @@
 }@else if(result() !== null) {
     <app-compliance-result [result]="result()!" />
 }@else if (hasError() == true) {
-    <h3>{{errorMessage()}}</h3>
+    <h3 style="color: red;">{{errorMessage()}}</h3>
 }
 
 

@@ -2,7 +2,7 @@
     <h3>Search Result</h3>
     <div class="result-card">
         <h4>Organization Name: <span>{{result().organization_name}}</span></h4>
-        <p><strong>Compliance Status:</strong> <span class="status {{result().isCompliant ? 'good' : 'bad'}}">Compliant</span></p>
+        <p><strong>Compliance Status:</strong> <span class="status {{result().isCompliant ? 'good' : 'bad'}}">{{result().isCompliant ? 'Compliant' : 'Non-Compliant'}}</span></p>
         <p>
             <strong>BMF Flag:</strong>
              @if(result().bmf_status) {

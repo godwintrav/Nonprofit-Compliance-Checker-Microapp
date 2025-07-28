@@ -10,34 +10,3 @@
   margin-top: 1rem;
 }
 
-.history-entry {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.history-entry:last-child {
-  border-bottom: none;
-}
-
-.status {
-  padding: 0.2rem 0.5rem;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.status.good {
-  color: #1e7e34;
-  background-color: #d4edda;
-}
-
-.status.warning {
-  color: #856404;
-  background-color: #fff3cd;
-}
-
-.status.bad {
-  color: #721c24;
-  background-color: #f8d7da;
-}

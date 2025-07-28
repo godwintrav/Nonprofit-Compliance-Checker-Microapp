@@ -49,7 +49,7 @@ describe('ComplianceService', () => {
 
       const result = await complianceService.checkCompliance('123456789');
 
-      expect(redisService.storeSearchHistory).toHaveBeenCalledWith('123456789');
+      expect(redisService.storeSearchHistory).toHaveBeenCalledWith(mockPactManData);
       expect(redisService.getQuery).toHaveBeenCalledWith('123456789');
       expect(result).toEqual(mockPactManData);
       expect(providerService.getComplianceByEIN).not.toHaveBeenCalled();
@@ -61,7 +61,7 @@ describe('ComplianceService', () => {
 
       const result = await complianceService.checkCompliance('123456789');
 
-      expect(redisService.storeSearchHistory).toHaveBeenCalledWith('123456789');
+      expect(redisService.storeSearchHistory).toHaveBeenCalledWith(mockPactManData);
       expect(redisService.getQuery).toHaveBeenCalledWith('123456789');
       expect(providerService.getComplianceByEIN).toHaveBeenCalledWith('123456789');
       expect(redisService.storeQuery).toHaveBeenCalledWith('123456789', mockPactManData);
@@ -75,14 +75,13 @@ describe('ComplianceService', () => {
 
       await expect(complianceService.checkCompliance('000000000')).rejects.toThrow(NotFoundException);
 
-      expect(redisService.storeSearchHistory).toHaveBeenCalledWith('000000000');
       expect(providerService.getComplianceByEIN).toHaveBeenCalledWith('000000000');
     });
   });
 
   describe('getSearchHistory', () => {
     it('should return search history from Redis', async () => {
-      const mockHistory = ['123456789', '987654321'];
+      const mockHistory = [mockPactManData, mockPactManData];
       redisService.getSearchHistory.mockResolvedValue(mockHistory);
 
       const result = await complianceService.getSearchHistory();

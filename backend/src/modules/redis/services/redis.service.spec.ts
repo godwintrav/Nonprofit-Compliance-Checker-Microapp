@@ -95,26 +95,30 @@ describe('RedisService', () => {
 
   describe('storeSearchHistory', () => {
     it('should add EIN to search history list', async () => {
+      const mockData: PactManData = { name: 'Sample Org' } as any;
       service.onModuleInit();
-      await service.storeSearchHistory('123456789');
+      await service.storeSearchHistory(mockData);
 
-      expect(mockRedis.rpush).toHaveBeenCalledWith('search:history', JSON.stringify('123456789'));
+      expect(mockRedis.rpush).toHaveBeenCalledWith('search:history', JSON.stringify(mockData));
     });
   });
 
   describe('getSearchHistory', () => {
     it('should return parsed search history list', async () => {
+      const mockData1: PactManData = { name: 'Sample Org 1' } as any;
+      const mockData2: PactManData = { name: 'Sample Org 2' } as any;
+      const mockData3: PactManData = { name: 'Sample Org 3' } as any;
       mockRedis.lrange.mockResolvedValueOnce([
-        JSON.stringify('111'),
-        JSON.stringify('222'),
-        JSON.stringify('333'),
+        JSON.stringify(mockData1),
+        JSON.stringify(mockData2),
+        JSON.stringify(mockData3),
       ]);
 
       service.onModuleInit();
       const result = await service.getSearchHistory();
 
       expect(mockRedis.lrange).toHaveBeenCalledWith('search:history', 0, -1);
-      expect(result).toEqual(['111', '222', '333']);
+      expect(result).toEqual([mockData1, mockData2, mockData3]);
     });
   });
 
