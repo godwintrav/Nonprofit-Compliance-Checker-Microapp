@@ -35,7 +35,8 @@ export class RedisService implements OnModuleInit {
   
   async getSearchHistory(): Promise<PactManData[]> {
     const key = `search:history`;
-    const results = await this.client.lrange(key, 0, -1);
+    let results = await this.client.lrange(key, 0, -1);
+    results = results.reverse()
     return results.map(item => JSON.parse(item) as PactManData);
   }
   
