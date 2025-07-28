@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a full-stack web application designed to help users check the compliance status of nonprofit organizations. It uses as a microfrontend and microservice architecture, allowing users to input an EIN (Employer Identification Number), retrieve compliance data from the Nonprofit Check Plus API, and display the results in a user-friendly interface. Additionally, it logs search history to a mock backend. You can access it on this link: https://frontend.compliance-checker.gooinfo.xyz/
+This project is a full-stack web application designed to help users check the compliance status of nonprofit organizations. It uses as a microfrontend and microservice architecture, allowing users to input an EIN (Employer Identification Number), retrieve compliance data from the Nonprofit Check Plus API, and display the results in a user-friendly interface. Additionally, it logs search history to the backend. You can access the live app on this link: https://frontend.compliance-checker.gooinfo.xyz/
 
 ## Features
 
@@ -42,7 +42,7 @@ The application is built with a microfrontend and microservice architecture, pro
 The frontend is developed as a Single Page Application (SPA) using Angular. It follows a component-based architecture, where UI elements are encapsulated into reusable components. Key architectural aspects include:
 
 *   **Component-Based UI**: The user interface is composed of distinct Angular components (e.g., `search-non-profit`, `history`, `navbar`, `footer`, `compliance-result`, `history-entry`) that manage their own state and rendering.
-*   **Service Layer**: Dedicated Angular services (e.g., `ComplianceCheckerService`) handle business logic, data fetching, and interaction with the backend API, ensuring a clean separation of concerns from the UI components.
+*   **Service Layer**: Dedicated `ComplianceCheckerService` Angular service that handles business logic, data fetching, and interaction with the backend API, ensuring a clean separation of concerns from the UI components.
 *   **Routing**: Angular's routing module manages navigation between different views (e.g., search page, history page) within the single-page application.
 
 ### Backend Architecture (NestJS)
@@ -51,8 +51,8 @@ The backend is a NestJS microservice designed to act as an API proxy layer and d
 
 *   **Modular Design**: The backend is organized into distinct modules (e.g., `AppModule`, `ComplianceModule`, `HttpModule`, `RedisModule`) each responsible for a specific feature or domain, enhancing maintainability and scalability.
 *   **API Proxy**: It serves as an intermediary (proxy) between the frontend and the external Nonprofit Check Plus API, handling requests, potentially transforming data, and securing API keys.
-*   **History Logging**: Search queries are logged to a mock backend with Redis, providing a history of past checks.
-*   **Redis Integration**: Utilizes Redis for in-memory data storage, which is used for caching API responses and seach history..
+*   **History Logging**: Search queries are logged to the backend and stored in Redis, providing a history of past checks.
+*   **Redis Integration**: Utilizes Redis for in-memory data storage, which is used for caching API responses and seach history.
 *   **Authentication Middleware**: Includes a basic authentication mechanism (simulated with a hardcoded token) implemented as middleware, demonstrating how security concerns can be integrated into the request pipeline.
 *   **Dependency Injection**: NestJS's powerful dependency injection system is used throughout, making components easily testable and managing their dependencies effectively.
 
@@ -69,9 +69,12 @@ The backend is a NestJS microservice designed to act as an API proxy layer and d
 *   **Redis**: Used for in-memory data storage, likely for caching or session management.
 
 ### Deployment & Containerization
+*   **Nginx**: A web server that is used as a static web server and reverse proxy that serves the built Angular app and handles client-side routing and also proxies API requests from frontend to backend.
 *   **Docker**: For containerizing the frontend, backend, and Redis services.
 *   **Docker Compose**: For defining and running multi-container Docker applications locally.
-*   **CapRover**: A PaaS (Platform as a Service) for deploying web applications, used for production deployment.
+*   **CapRover**: A PaaS (Platform as a Service) for deploying the web application to AWS.
+*   **AWS**: Cloud Provider used for deploying our application on an EC2 instance and managed with Caprover.
+
 
 ## Setup Instructions
 
@@ -121,35 +124,31 @@ This application is configured for easy deployment using CapRover. Each service 
 
 ### Prerequisites for CapRover Deployment
 
-*   A running [CapRover](https://caprover.com/docs/get-started.html) instance.
+*   A running [CapRover](https://caprover.com/docs/get-started.html) instance either on EC2 or any server that has been setup to run Caprover with docker.
 *   `caprover-cli` installed and configured on your local machine.
+* Created frontend application and backend application on the Caprover instance.
+* Created Redis instance on the Caprover instance using One Click Apps section.
+* Update the `captain-definition` file path in the backend application you created on Caprover to point to the `captain-definition` file in the `backend` directory
+* Update the `captain-definition` file path in the frontend application you created on Caprover to point to the `captain-definition` file in the `frontend` directory
 
 ### Deployment Steps
 
 1.  **Deploy the Backend**:
-    Navigate to the `backend` directory:
-    ```bash
-    cd backend
-    ```
     Deploy the backend service using CapRover CLI:
     ```bash
     caprover deploy
     ```
-    Follow the prompts to select your CapRover instance and app name (e.g., `nonprofit-checker-backend`).
+    Follow the prompts to select your CapRover instance and app name you created for backend from the prerequisites (e.g., `nonprofit-checker-backend`).
 
 2.  **Deploy the Frontend**:
-    Navigate to the `frontend` directory:
-    ```bash
-    cd ../frontend
-    ```
     Deploy the frontend service using CapRover CLI:
     ```bash
     caprover deploy
     ```
-    Follow the prompts to select your CapRover instance and app name (e.g., `nonprofit-checker-frontend`).
+    Follow the prompts to select your CapRover instance and app name you created for frontend from the prerequisites (e.g., `nonprofit-checker-frontend`).
 
-3.  **Configure CapRover Routes (if necessary)**:
-    Ensure your CapRover apps are configured to communicate correctly. You might need to set up environment variables in CapRover for the frontend to point to the backend service's CapRover URL.
+3.  **Configure CapRover Routes**:
+    Ensure your CapRover apps(including redis) are configured to communicate correctly. You will need to set up environment variables in CapRover for the backend. Update the nginx configuration in `frontend/nginx.conf` to point to the internal DNS name for the backend application url and port.
 
 ## Project Structure
 
