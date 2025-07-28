@@ -29,3 +29,12 @@
   color: #721c24;
   background-color: #f8d7da;
 }
+
+@media (max-width: 768px) {
+  .history-entry {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+}
