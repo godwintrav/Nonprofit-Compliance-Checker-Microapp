@@ -26,9 +26,19 @@ The backend url can be accessed here: https://backend.compliance-checker.gooinfo
 Below is a screenshot of the Search Non-Profit Page:
 ![Search-page](search-non-profit-page.png)
 
+Mobile View:
+
+
+![Search-page-mobile-view](mobile-view-search.png)
+
 
 Below is a screenshot of the Search History Page:
 ![History-page](history-page.png)
+
+Mobile View:
+
+
+![History-page-mobile-view](search-history-mobile-view.png)
 
 
 ## Architecture Overview
